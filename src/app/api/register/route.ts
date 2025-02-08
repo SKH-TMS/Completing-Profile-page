@@ -7,7 +7,8 @@ const client = new MongoClient(uri);
 
 export async function POST(req: Request) {
   try {
-    const { email, password } = await req.json();
+    const { firstName, secondName, email, password, contact } =
+      await req.json();
 
     // Connect to MongoDB
     await client.connect();
@@ -23,11 +24,23 @@ export async function POST(req: Request) {
       });
     }
 
+
     // Insert new user into database
-    const result = await collection.insertOne({ email, password });
+    const result = await collection.insertOne({
+      firstName,
+      secondName,
+      email,
+      password,
+      contact: contact || "", // Optional field
+    });
 
     // Generate JWT token
-    const token = generateToken({ email });
+    const token = generateToken({
+      email,
+      firstName,
+      secondName,
+      contact,
+    });
 
     // Set the token as an HttpOnly cookie
     const res = NextResponse.json({
