@@ -20,7 +20,8 @@ export async function POST(req: Request) {
     return NextResponse.json({
       success: true,
       message: 'Token valid',
-      user: { email: user.email }, 
+      user: { email: user.email,firstName: user.firstName,
+        secondName: user.secondName, contact: user.contact,}, 
     });
   } catch (error) {
     console.error('Error verifying token:', error);
